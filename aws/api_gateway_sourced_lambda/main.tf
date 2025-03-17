@@ -39,6 +39,7 @@ module "lambda_function" {
 
 module "lambda_source" {
   source              = "git::https://github.com/barrydunne/Terraform.git//aws/lambda_source_api_gateway_websocket"
+  environment         = var.environment
   function_name       = var.function_name
   function_invoke_arn = module.lambda_function.invoke_arn
   api_gateway_path    = var.api_gateway_path
