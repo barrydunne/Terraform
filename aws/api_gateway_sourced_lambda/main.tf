@@ -17,16 +17,17 @@ module "iam_role" {
 }
 
 module "lambda_function" {
-  source        = "git::https://github.com/barrydunne/Terraform.git//aws/lambda"
-  environment   = var.environment
-  function_name = var.function_name
-  handler       = var.function_handler
-  runtime       = var.function_runtime
-  architectures = var.function_architectures
-  memory_size   = var.function_memory_size
-  timeout       = var.function_timeout
-  zip_path      = var.function_zip_path
-  iam_role      = module.iam_role.role
+  source           = "git::https://github.com/barrydunne/Terraform.git//aws/lambda"
+  environment      = var.environment
+  function_name    = var.function_name
+  function_version = var.function_version
+  handler          = var.function_handler
+  runtime          = var.function_runtime
+  architectures    = var.function_architectures
+  memory_size      = var.function_memory_size
+  timeout          = var.function_timeout
+  zip_path         = var.function_zip_path
+  iam_role         = module.iam_role.role
   environment_variables = {
     ASPNETCORE_ENVIRONMENT      = var.aspnetcore_environment
     LAMBDA_VERSION              = var.function_version
