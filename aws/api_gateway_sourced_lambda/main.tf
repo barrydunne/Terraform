@@ -1,5 +1,5 @@
 module "iam_role" {
-  source            = "git::https://github.com/barrydunne/Terraform.git//aws/iam_role"
+  source            = "git::https://github.com/barrydunne/Terraform.git//aws/iam_role?ref=1.0"
   role_name         = "${var.function_name}-role"
   attach_policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
   assume_role_policy = jsonencode({
@@ -17,7 +17,7 @@ module "iam_role" {
 }
 
 module "lambda_function" {
-  source           = "git::https://github.com/barrydunne/Terraform.git//aws/lambda"
+  source           = "git::https://github.com/barrydunne/Terraform.git//aws/lambda?ref=1.0"
   environment      = var.environment
   function_name    = var.function_name
   function_version = var.function_version
@@ -38,7 +38,7 @@ module "lambda_function" {
 }
 
 module "lambda_source" {
-  source              = "git::https://github.com/barrydunne/Terraform.git//aws/lambda_source_api_gateway_websocket"
+  source              = "git::https://github.com/barrydunne/Terraform.git//aws/lambda_source_api_gateway_websocket?ref=1.0"
   environment         = var.environment
   function_name       = var.function_name
   function_invoke_arn = module.lambda_function.invoke_arn

@@ -1,5 +1,5 @@
 module "sqs_queue" {
-  source             = "git::https://github.com/barrydunne/Terraform.git//aws/sqs"
+  source             = "git::https://github.com/barrydunne/Terraform.git//aws/sqs?ref=1.0"
   queue_name         = var.queue_name != "" ? var.queue_name : "${var.function_name}-sqs"
   dlq_name           = var.queue_name != "" ? "${var.queue_name}-dlq" : "${var.function_name}-sqs-dlq"
   visibility_timeout = 30
@@ -7,7 +7,7 @@ module "sqs_queue" {
 }
 
 module "iam_role" {
-  source            = "git::https://github.com/barrydunne/Terraform.git//aws/iam_role"
+  source            = "git::https://github.com/barrydunne/Terraform.git//aws/iam_role?ref=1.0"
   role_name         = "${var.function_name}-role"
   attach_policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaSQSQueueExecutionRole"
   assume_role_policy = jsonencode({
@@ -25,7 +25,7 @@ module "iam_role" {
 }
 
 module "lambda_function" {
-  source                 = "git::https://github.com/barrydunne/Terraform.git//aws/lambda"
+  source                 = "git::https://github.com/barrydunne/Terraform.git//aws/lambda?ref=1.0"
   environment            = var.environment
   function_name          = var.function_name
   function_version       = var.function_version
@@ -43,7 +43,7 @@ module "lambda_function" {
 }
 
 module "lambda_source" {
-  source                             = "git::https://github.com/barrydunne/Terraform.git//aws/lambda_source_sqs"
+  source                             = "git::https://github.com/barrydunne/Terraform.git//aws/lambda_source_sqs?ref=1.0"
   function_name                      = module.lambda_function.function_name
   queue_arn                          = module.sqs_queue.queue_arn
   batch_size                         = 5
@@ -90,7 +90,7 @@ resource "aws_sqs_queue_policy" "queue_policy" {
 }
 
 module "subscription" {
-  source     = "git::https://github.com/barrydunne/Terraform.git//aws/sqs_sns_subscription"
+  source     = "git::https://github.com/barrydunne/Terraform.git//aws/sqs_sns_subscription?ref=1.0"
   topic_arn  = var.subscription_topic_arn
   queue_arn  = module.sqs_queue.queue_arn
   depends_on = [module.lambda_function]
